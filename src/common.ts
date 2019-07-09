@@ -19,19 +19,19 @@ const params = (args: any) => {
   }, args);
 };
 
-const cosGet = (key: string) => new Promise((resolve, reject) => {
+const cosGet = (key: string): Promise<any> => new Promise((resolve) => {
   cos.getObject(params({
     Key: key,
   }), (err: any, response: any) => {
     if (err) {
-      reject(err);
+      resolve(false);
     } else {
       resolve(response);
     }
   });
 });
 
-const cosPut = (key: string, data: any) => new Promise((resolve, reject) => {
+const cosPut = (key: string, data: any): Promise<any> => new Promise((resolve, reject) => {
   cos.putObject(params({
     Key: key,
     Body: Buffer.from(data),
@@ -44,7 +44,7 @@ const cosPut = (key: string, data: any) => new Promise((resolve, reject) => {
   });
 });
 
-const cosDelete = (key: string) => new Promise((resolve, reject) => {
+const cosDelete = (key: string): Promise<any> => new Promise((resolve, reject) => {
   cos.deleteObject(params({
     Key: key,
   }), (err: any, response: any) => {
@@ -56,4 +56,4 @@ const cosDelete = (key: string) => new Promise((resolve, reject) => {
   });
 });
 
-export { httpClient };
+export { httpClient, cosGet, cosPut, cosDelete };
