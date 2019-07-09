@@ -1,4 +1,4 @@
-import { cosGet, httpClient } from './common';
+import { setBar, onBar, cosGet, httpClient } from './common';
 
 export class Mirros {
   providers: any;
@@ -13,7 +13,10 @@ export class Mirros {
 
   async loadPackages() {
     if (!this.cos) {
-      const response = await httpClient('/packages.json');
+      const bar = setBar('Download /packages.json');
+      const response = await httpClient('/packages.json').on('downloadProgress', (progress: any) =>
+        onBar(bar, progress),
+      );
       this.raw = response.body;
     } else {
       const response = await cosGet('/packages.json');
