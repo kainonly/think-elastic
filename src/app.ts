@@ -1,21 +1,14 @@
-import { Packages } from './packages';
+import { Mirros } from './mirros';
+import { Providers } from './providers';
 
 const App = () => new Promise(async (resolve) => {
-  const origin = await new Packages(true).loadPackages();
-  const originProviders = origin.getProviders();
-
-
+  const mirros = await new Mirros().loadPackages();
+  const cosMirror = await new Mirros(true).loadPackages();
+  const providers = await new Providers(
+    mirros.providers,
+    cosMirror.providers,
+  ).loadProvider();
   resolve();
-  //     cos.getObject({
-  //         Bucket: env.BUCKET,
-  //         Region: env.REGION,
-  //         Key: 'packages.json',
-  //     }, (err: any, data: any) => {
-  //         if (err) return;
-  //         const cosPackages = JSON.parse(data.Body.toString());
-  //         const cosProviders = cosPackages['provider-includes'];
-  //
-  //     });
 });
 
 export { App };

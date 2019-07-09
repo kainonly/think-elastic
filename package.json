@@ -24,7 +24,8 @@
   },
   "dependencies": {
     "cos-nodejs-sdk-v5": "^2.5.9",
-    "got": "^9.6.0"
+    "got": "^9.6.0",
+    "http2-wrapper": "^0.4.2"
   },
   "devDependencies": {
     "@types/got": "^9.6.0",
