@@ -7,7 +7,8 @@
   "private": true,
   "scripts": {
     "start": "ts-node bootstrap.ts",
-    "build": "webpack"
+    "build": "webpack",
+    "start:prod": "node dist/index.js"
   },
   "author": {
     "name": "kain",
