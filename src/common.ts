@@ -4,7 +4,6 @@ const { env } = require('process');
 
 const httpClient = got.extend({
   baseUrl: env.SOURCE,
-  json: true,
 });
 
 const cos = new COS({

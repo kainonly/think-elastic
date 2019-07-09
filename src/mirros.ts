@@ -2,6 +2,7 @@ import { cosGet, httpClient } from './common';
 
 export class Mirros {
   providers: any;
+  raw: string;
 
   private cos: boolean;
   private data: any;
@@ -13,12 +14,12 @@ export class Mirros {
   async loadPackages() {
     if (!this.cos) {
       const response = await httpClient('/packages.json');
-      this.data = response.body;
+      this.raw = response.body;
     } else {
       const response = await cosGet('/packages.json');
-      const body = response.Body.toString();
-      this.data = JSON.parse(body);
+      this.raw = response.Body.toString();
     }
+    this.data = JSON.parse(this.raw);
     this.providers = this.data['provider-includes'];
     return this;
   }
