@@ -6,7 +6,7 @@
   },
   "private": true,
   "scripts": {
-    "start": "ts-node dev.ts",
+    "start": "ts-node bootstrap.ts",
     "build": "webpack"
   },
   "author": {
@@ -27,11 +27,9 @@
     "got": "^9.6.0"
   },
   "devDependencies": {
-    "@types/dotenv": "^6.1.1",
     "@types/got": "^9.6.0",
     "@types/node": "^12.0.3",
     "@types/webpack": "^4.4.32",
-    "dotenv": "^8.0.0",
     "ts-loader": "^6.0.1",
     "ts-node": "^8.2.0",
     "typescript": "^3.5.1",

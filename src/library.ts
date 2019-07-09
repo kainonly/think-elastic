@@ -1,37 +1,59 @@
 const COS = require('cos-nodejs-sdk-v5');
 const got = require('got');
+const { env } = require('process');
 
-export const library = async (env: any) => {
-    try {
-        const cos = new COS({
-            SecretId: env.SECRETID,
-            SecretKey: env.SECRETKEY
-        });
+const httpClient = got.extend({
+  baseUrl: env.SOURCE,
+  json: true,
+});
 
-        const client = got.extend({
-            baseUrl: env.SOURCE,
-            json: true,
-        });
+const cos = new COS({
+  SecretId: env.SECRETID,
+  SecretKey: env.SECRETKEY,
+});
 
-        const packages = await client('/packages.json');
-        const providers = packages['provider-includes'];
-        cos.getObject({
-            Bucket: env.BUCKET,
-            Region: env.REGION,
-            Key: 'packages.json',
-        }, (err: any, data: any) => {
-            if (err) return;
-            const cosPackages = JSON.parse(data.Body.toString());
-            const cosProviders = cosPackages['provider-includes'];
-
-        });
-        // httpClient('/packages.json').on('data', (data: any) => {
-        //     // update packages
-        //     fs.writeFileSync('cache/packages.json', data);
-        //     // compare
-        //     const packages = JSON.parse(data.toString());
-        //
-        // });
-    } catch (e) {
-    }
+const params = (args: any) => {
+  return Object.assign({
+    Bucket: env.BUCKET,
+    Region: env.REGION,
+  }, args);
 };
+
+const cosGet = (key: string) => new Promise((resolve, reject) => {
+  cos.getObject(params({
+    Key: key,
+  }), (err: any, response: any) => {
+    if (err) {
+      reject(err);
+    } else {
+      resolve(response);
+    }
+  });
+});
+
+const cosPut = (key: string, data: any) => new Promise((resolve, reject) => {
+  cos.putObject(params({
+    Key: key,
+    Body: Buffer.from(data),
+  }), (err: any, response: any) => {
+    if (err) {
+      reject(err);
+    } else {
+      resolve(response);
+    }
+  });
+});
+
+const cosDelete = (key: string) => new Promise((resolve, reject) => {
+  cos.deleteObject(params({
+    Key: key,
+  }), (err: any, response: any) => {
+    if (err) {
+      reject(err);
+    } else {
+      resolve(response);
+    }
+  });
+});
+
+export { httpClient };
