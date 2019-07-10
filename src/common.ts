@@ -1,9 +1,6 @@
-import { Bar } from 'cli-progress';
-
 const COS = require('cos-nodejs-sdk-v5');
 const got = require('got');
 const { env } = require('process');
-const progress = require('cli-progress');
 
 const httpClient = got.extend({
   baseUrl: env.SOURCE,
@@ -63,28 +60,10 @@ const cosDelete = (key: string): Promise<any> => new Promise((resolve, reject) =
   });
 });
 
-const setBar = (title: string) => {
-  return new progress.Bar({
-    format: `${title} [{bar}] {percentage}% | ETA: {eta}s | {value}/{total}`,
-    fps: 1,
-  });
-};
-
-const onBar = (bar: Bar, progress: any) => {
-  if (progress.percent === 0) {
-    bar.start(progress.total, 0);
-  } else {
-    bar.update(progress.transferred);
-    if (progress.percent === 1) bar.stop();
-  }
-};
-
 export {
   httpClient,
   cosGet,
   cosPut,
   cosDelete,
   providerPath,
-  setBar,
-  onBar,
 };

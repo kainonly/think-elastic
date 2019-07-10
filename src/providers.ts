@@ -1,10 +1,10 @@
-import { cosGet, httpClient, onBar, providerPath, setBar } from './common';
+import { cosGet, httpClient, providerPath } from './common';
 
 export class Providers {
   private source: any;
-  private sourceProviders: any;
+  private sourceProviders: any = {};
   private cos: any;
-  private cosProviders: any;
+  private cosProviders: any = {};
 
   constructor(
     source: any,
@@ -19,10 +19,14 @@ export class Providers {
       if (!this.source.hasOwnProperty(key)) continue;
       const provider = this.source[key];
       const path = providerPath(key, provider);
-      const bar = setBar('Download ' + path);
-      const response = await httpClient(path).on('downloadProgress', (progress: any) =>
-        onBar(bar, progress),
-      );
+      const response = await httpClient(path);
+      this.sourceProviders[key] = response.body;
+      const cosProvider = this.cos[key];
+      const cosPath = providerPath(key, cosProvider);
+      const cosResponse = await cosGet(cosPath);
+      if (cosResponse) {
+        this.cosProviders[key] = cosResponse.Body.toString();
+      }
     }
     return this;
   }
