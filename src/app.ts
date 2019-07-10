@@ -20,15 +20,16 @@ const App = () => new Promise(async (resolve) => {
     resolve('delete providers failed!');
     return;
   }
-  const addPackageResult = await addPackage(providers.addPackage);
-  if (!addPackageResult) {
-    resolve('download packages failed!');
-    return;
-  }
 
   const addProvidersResult = await addProvider(providers.addProvider);
   if (!addProvidersResult) {
     resolve('download providers failed!');
+    return;
+  }
+
+  const addPackageResult = await addPackage(providers.addPackage);
+  if (!addPackageResult) {
+    resolve('download packages failed!');
     return;
   }
 
