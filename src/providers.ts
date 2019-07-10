@@ -7,9 +7,7 @@ export class Providers {
   deletePackage: any[] = [];
 
   private source: any;
-  private sourceProviders: any = {};
   private cos: any;
-  private cosProviders: any = {};
 
   constructor(
     source: any,
@@ -25,14 +23,17 @@ export class Providers {
       const provider = this.source[key];
       const path = providerPath(key, provider);
       const response = await httpClient(path);
-      this.sourceProviders[key] = JSON.parse(response.body)['providers'];
+      const sourceProviders = JSON.parse(response.body)['providers'];
       const cosProvider = this.cos[key];
       if (provider === cosProvider) continue;
       const cosPath = providerPath(key, cosProvider);
       const cosResponse = await cosGet(cosPath);
-      if (!cosResponse) continue;
-      this.cosProviders[key] = JSON.parse(cosResponse.Body.toString())['providers'];
-      this.compare(this.sourceProviders[key], this.cosProviders[key]);
+      if (cosResponse) {
+        const cosProviders = JSON.parse(cosResponse.Body.toString())['providers'];
+        this.compare(sourceProviders, cosProviders);
+      } else {
+        this.add(sourceProviders);
+      }
       this.addProvider.push(path);
       this.deleteProvider.push({
         Key: cosPath,
@@ -44,10 +45,6 @@ export class Providers {
   private compare(source: any, cos: any) {
     for (const key in source) {
       if (!source.hasOwnProperty(key)) continue;
-      if (!cos.hasOwnProperty(key)) {
-        this.addPackage.push(packagePath(key, source[key]));
-        continue;
-      }
       const sourceSha256 = source[key].sha256;
       const cosSha256 = cos[key].sha256;
       if (sourceSha256 !== cosSha256) {
@@ -56,6 +53,13 @@ export class Providers {
         });
         this.addPackage.push(packagePath(key, source[key]));
       }
+    }
+  }
+
+  private add(source: any) {
+    for (const key in source) {
+      if (!source.hasOwnProperty(key)) continue;
+      this.addPackage.push(packagePath(key, source[key]));
     }
   }
 }

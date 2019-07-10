@@ -20,12 +20,24 @@ const params = (args: any) => {
 };
 
 const providerPath = (key: string, data: any) => {
-  return '/' + key.replace('%hash%', data.sha256);
+  return key.replace('%hash%', data.sha256);
 };
 
 const packagePath = (key: string, data: any) => {
-  return `/p/${key}$${data.sha256}.json`;
+  return `p/${key}$${data.sha256}.json`;
 };
+
+const cosHead = (key: string): Promise<any> => new Promise((resolve) => {
+  cos.headObject(params({
+    Key: key,
+  }), (err: any, response: any) => {
+    if (err) {
+      resolve(false);
+    } else {
+      resolve(response);
+    }
+  });
+});
 
 const cosGet = (key: string): Promise<any> => new Promise((resolve) => {
   cos.getObject(params({
@@ -66,6 +78,7 @@ const cosDelete = (keys: any[]): Promise<any> => new Promise((resolve, reject) =
 
 export {
   httpClient,
+  cosHead,
   cosGet,
   cosPut,
   cosDelete,
