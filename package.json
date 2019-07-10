@@ -24,13 +24,10 @@
     "url": "https://github.com/kainonly/scf-packagist/issues"
   },
   "dependencies": {
-    "cli-progress": "^2.1.1",
     "cos-nodejs-sdk-v5": "^2.5.9",
-    "got": "^9.6.0",
-    "http2-wrapper": "^0.4.2"
+    "got": "^9.6.0"
   },
   "devDependencies": {
-    "@types/cli-progress": "^1.8.1",
     "@types/got": "^9.6.0",
     "@types/node": "^12.0.3",
     "@types/webpack": "^4.4.32",
