@@ -16,7 +16,7 @@ export class Mirros {
       const response = await httpClient('/packages.json');
       this.raw = response.body;
     } else {
-      const response = await cosGet('/packages.json');
+      const response = await cosGet('packages.json');
       this.raw = response.Body.toString();
     }
     this.data = JSON.parse(this.raw);
