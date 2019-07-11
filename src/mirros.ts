@@ -1,23 +1,16 @@
-import { httpClient, get, add } from './common';
+import { httpClient, add, setBar, onBar } from './common';
 
 export class Mirros {
-  providers: any;
-  data: any;
-
-  private local: boolean;
-
-  constructor(local: boolean = false) {
-    this.local = local;
-  }
+  providerIncludes: any;
+  private data: any;
 
   async loadPackages() {
-    if (!this.local) {
-      const response = await httpClient('packages.json');
-      this.data = response.body;
-    } else {
-      this.data = get('packages.json');
-    }
-    this.providers = this.data['provider-includes'];
+    const bar = setBar('Download /packages.json');
+    const response = await httpClient('packages.json').on('downloadProgress', (progress: any) =>
+      onBar(bar, progress),
+    );
+    this.data = response.body;
+    this.providerIncludes = this.data['provider-includes'];
     return this;
   }
 
