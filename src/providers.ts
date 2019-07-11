@@ -1,65 +1,101 @@
-import { get, httpClient, packagePath, providerPath } from './common';
+import { add, check, empty, find, httpClient, onBar, packagePath, providerPath, setBar } from './common';
+import { removeSync } from 'fs-extra';
+
+const path = require('path');
 
 export class Providers {
-  addProvider: any[] = [];
-  deleteProvider: any[] = [];
-  addPackage: any[] = [];
-  deletePackage: any[] = [];
-
-  private source: any;
-  private cos: any;
+  private providersQueue: any[] = [];
+  private packageQueue: any[] = [];
 
   constructor(
-    source: any,
-    cos: any,
+    private providerIncludes: any,
   ) {
-    this.source = source;
-    this.cos = cos;
+    this.init();
   }
 
-  async loadProvider() {
-    for (const key in this.source) {
-      if (!this.source.hasOwnProperty(key)) continue;
-      const provider = this.source[key];
-      const path = providerPath(key, provider);
-      const response = await httpClient(path);
-      const sourceProviders = JSON.parse(response.body)['providers'];
-      const cosProvider = this.cos[key];
-      if (provider === cosProvider) continue;
-      const cosPath = providerPath(key, cosProvider);
-      const cosResponse = await cosGet(cosPath);
-      if (cosResponse) {
-        const cosProviders = JSON.parse(cosResponse.Body.toString())['providers'];
-        this.compare(sourceProviders, cosProviders);
-      } else {
-        this.add(sourceProviders);
-      }
-      this.addProvider.push(path);
-      this.deleteProvider.push({
-        Key: cosPath,
-      });
+  private init() {
+    /**
+     * Clear Old Version Providers
+     */
+    const providers = find('p', '.json');
+    for (const key of providers) {
+      removeSync(path.normalize(key));
     }
-    return this;
-  }
-
-  private compare(source: any, cos: any) {
-    for (const key in source) {
-      if (!source.hasOwnProperty(key)) continue;
-      const sourceSha256 = source[key].sha256;
-      const cosSha256 = cos[key].sha256;
-      if (sourceSha256 !== cosSha256) {
-        this.deletePackage.push({
-          Key: packagePath(key, cos[key]),
-        });
-        this.addPackage.push(packagePath(key, source[key]));
-      }
+    /**
+     * Set Provider Sync Queue
+     */
+    for (const key in this.providerIncludes) {
+      if (!this.providerIncludes.hasOwnProperty(key)) continue;
+      this.providersQueue.push(providerPath(key, this.providerIncludes[key]));
     }
   }
 
-  private add(source: any) {
-    for (const key in source) {
-      if (!source.hasOwnProperty(key)) continue;
-      this.addPackage.push(packagePath(key, source[key]));
+  /**
+   * Provider Sync
+   */
+  async sync() {
+    try {
+      /**
+       * Sync provider json
+       */
+      while (this.providersQueue.length !== 0) {
+        const path = this.providersQueue[0];
+        const bar = setBar('Download ' + path);
+        const response = await httpClient(path).on('downloadProgress', (progress: any) =>
+          onBar(bar, progress),
+        );
+        const data = response.body;
+        const result = add(path, data);
+        if (result) {
+          /**
+           * Set Provider Package Sync Queue
+           */
+          const providers = data['providers'];
+          for (const key in providers) {
+            if (!providers.hasOwnProperty(key)) continue;
+            this.packageQueue.push(packagePath(key, providers[key]));
+          }
+          this.providersQueue.shift();
+        }
+      }
+      return true;
+    } catch (e) {
+      console.error(e);
+      return false;
+    }
+  }
+
+  /**
+   *Sync package
+   */
+  async syncPackage() {
+    try {
+      while (this.packageQueue.length !== 0) {
+        const path = this.packageQueue[0];
+        const exists = check(path);
+        if (exists) {
+          this.packageQueue.shift();
+        } else {
+          /**
+           * Start Provider Package Download
+           */
+          if (!empty(path)) {
+            continue;
+          }
+          const bar = setBar('Download ' + path);
+          const response = await httpClient(path).on('downloadProgress', (progress: any) =>
+            onBar(bar, progress),
+          );
+          const data = response.body;
+          const result = add(path, data);
+          if (result) {
+            this.packageQueue.shift();
+          }
+        }
+      }
+    } catch (e) {
+      console.error(e);
+      return false;
     }
   }
 }
