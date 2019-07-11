@@ -1,5 +1,5 @@
 {
-  "name": "scf-packagist",
+  "name": "node-packagist",
   "version": "1.0.0",
   "engines": {
     "node": ">= 8.0.0"
@@ -15,13 +15,13 @@
     "email": "zhangtqx@vip.qq.com"
   },
   "license": "MIT",
-  "homepage": "https://github.com/kainonly/scf-packagist",
+  "homepage": "https://github.com/kainonly/node-packagist",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kainonly/scf-packagist.git"
+    "url": "git+https://github.com/kainonly/node-packagist.git"
   },
   "bugs": {
-    "url": "https://github.com/kainonly/scf-packagist/issues"
+    "url": "https://github.com/kainonly/node-packagist/issues"
   },
   "dependencies": {
     "cli-progress": "^2.1.1",
