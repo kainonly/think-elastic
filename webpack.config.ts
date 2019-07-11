@@ -2,7 +2,7 @@ import path from 'path';
 import webpack from 'webpack';
 
 const config: webpack.Configuration = {
-  entry: './src/index.ts',
+  entry: './src/bootstrap.ts',
   target: 'async-node',
   mode: 'production',
   node: {
@@ -21,7 +21,7 @@ const config: webpack.Configuration = {
     extensions: ['.tsx', '.ts', '.js'],
   },
   output: {
-    filename: 'index.js',
+    filename: 'packagist.js',
     path: path.resolve(__dirname, 'dist'),
     libraryTarget: 'umd',
   },
