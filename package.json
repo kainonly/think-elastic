@@ -7,7 +7,8 @@
   "private": true,
   "scripts": {
     "start": "ts-node src/bootstrap.ts",
-    "build": "webpack"
+    "build": "webpack",
+    "start:prod": "node dist/packagist.js"
   },
   "author": {
     "name": "kain",
@@ -24,10 +25,10 @@
   },
   "dependencies": {
     "cli-progress": "^2.1.1",
-    "cos-nodejs-sdk-v5": "^2.5.9",
     "dotenv": "^8.0.0",
     "fs-extra": "^8.1.0",
     "fs-finder": "^1.8.1",
+    "fs-mock": "^1.2.1",
     "got": "^9.6.0"
   },
   "devDependencies": {
