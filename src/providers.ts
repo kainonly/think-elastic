@@ -1,4 +1,4 @@
-import { cosGet, httpClient, packagePath, providerPath } from './common';
+import { get, httpClient, packagePath, providerPath } from './common';
 
 export class Providers {
   addProvider: any[] = [];

@@ -1,26 +1,27 @@
-import { cosGet, httpClient } from './common';
+import { httpClient, get, add } from './common';
 
 export class Mirros {
   providers: any;
-  raw: string;
+  data: any;
 
-  private cos: boolean;
-  private data: any;
+  private local: boolean;
 
-  constructor(cos: boolean = false) {
-    this.cos = cos;
+  constructor(local: boolean = false) {
+    this.local = local;
   }
 
   async loadPackages() {
-    if (!this.cos) {
-      const response = await httpClient('/packages.json');
-      this.raw = response.body;
+    if (!this.local) {
+      const response = await httpClient('packages.json');
+      this.data = response.body;
     } else {
-      const response = await cosGet('packages.json');
-      this.raw = response.Body.toString();
+      this.data = get('packages.json');
     }
-    this.data = JSON.parse(this.raw);
     this.providers = this.data['provider-includes'];
     return this;
+  }
+
+  sync() {
+    return add('packages.json', this.data);
   }
 }

@@ -6,9 +6,8 @@
   },
   "private": true,
   "scripts": {
-    "start": "ts-node bootstrap.ts",
-    "build": "webpack",
-    "start:prod": "node dist/index.js"
+    "start": "ts-node src/bootstrap.ts",
+    "build": "webpack"
   },
   "author": {
     "name": "kain",
@@ -25,9 +24,13 @@
   },
   "dependencies": {
     "cos-nodejs-sdk-v5": "^2.5.9",
+    "dotenv": "^8.0.0",
+    "fs-extra": "^8.1.0",
     "got": "^9.6.0"
   },
   "devDependencies": {
+    "@types/dotenv": "^6.1.1",
+    "@types/fs-extra": "^8.0.0",
     "@types/got": "^9.6.0",
     "@types/node": "^12.0.3",
     "@types/webpack": "^4.4.32",
