@@ -77,6 +77,7 @@ export class Providers {
         const path = this.packageQueue[0];
         const exists = check(path);
         if (exists) {
+          console.log('Exists:' + path);
           this.packageQueue.shift();
         } else {
           /**
