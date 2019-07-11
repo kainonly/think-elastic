@@ -17,10 +17,13 @@ export class Providers {
     /**
      * Clear Old Version Providers
      */
-    const providers = find('p', '.json');
-    for (const key of providers) {
-      removeSync(path.normalize(key));
+    if (check('p')) {
+      const providers = find('p', '.json');
+      for (const key of providers) {
+        removeSync(path.normalize(key));
+      }
     }
+
     /**
      * Set Provider Sync Queue
      */
