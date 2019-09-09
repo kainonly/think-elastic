@@ -1,0 +1,8 @@
+{
+  "name": "self-packagist",
+  "description": "Self Pckagist Factory",
+  "version": "1.0.0",
+  "dependencies": {
+    "got": "^9.6.0"
+  }
+}
