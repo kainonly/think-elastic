@@ -1,8 +1,13 @@
 {
-  "name": "kain/satis-serverless",
-  "description": "Serverless Repository Factory",
+  "name": "kain/self-packagist",
+  "description": "Self Repository Factory",
   "require": {
-    "composer/satis": "dev-master"
+    "ringcentral/psr7": "^1.2"
+  },
+  "autoload": {
+    "psr-4": {
+      "self\\packagist\\": "src/"
+    }
   },
   "license": "MIT",
   "authors": [
