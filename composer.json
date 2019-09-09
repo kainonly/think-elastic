@@ -1,0 +1,14 @@
+{
+  "name": "kain/satis-serverless",
+  "description": "Serverless Repository Factory",
+  "require": {
+    "composer/satis": "dev-master"
+  },
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "kain",
+      "email": "zhangtqx@vip.qq.com"
+    }
+  ]
+}
