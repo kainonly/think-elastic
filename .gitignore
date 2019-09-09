@@ -1,6 +1,5 @@
 /.idea
-/.vscode
-/vendor
-*.log
-.env
-composer.lock
+/.cache
+/node_modules
+/dist
+package-lock.json
