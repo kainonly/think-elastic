@@ -1,0 +1,11 @@
+{
+  "name": "kain/scf-packagist-factory",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "kain",
+      "email": "zhangtqx@vip.qq.com"
+    }
+  ],
+  "require": {}
+}

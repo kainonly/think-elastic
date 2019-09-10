@@ -1,5 +1,0 @@
-const App = () => {
-
-};
-
-export { App };
