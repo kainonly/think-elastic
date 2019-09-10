@@ -1,3 +1,4 @@
 /.idea
 /vendor/
+/testing
 composer.lock
