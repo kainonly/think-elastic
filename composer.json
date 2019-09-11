@@ -1,10 +1,15 @@
 {
-  "name": "kain/scf-packagist-factory",
-  "description": "Serverless Packagist Factory",
+  "name": "kain/think-elastic",
+  "description": "Think Bit Elasticsearch 扩展",
   "require": {
-    "ext-json": "*",
-    "ringcentral/psr7": "^1.2",
-    "aliyuncs/oss-sdk-php": "^2.3"
+    "elasticsearch/elasticsearch": "^7.2"
+  },
+  "extra": {
+    "think": {
+      "services": [
+        "think\\elastic\\service\\ElasticService"
+      ]
+    }
   },
   "authors": [
     {
@@ -12,5 +17,9 @@
       "email": "zhangtqx@vip.qq.com"
     }
   ],
+  "support": {
+    "docs": "https://think-bit.kain.net.cn",
+    "email": "zhangtqx@vip.qq.com"
+  },
   "license": "MIT"
 }
