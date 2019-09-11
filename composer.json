@@ -1,6 +1,6 @@
 {
   "name": "kain/think-elastic",
-  "description": "Think Bit Elasticsearch 扩展",
+  "description": "ThinkPHP Elasticsearch 扩展",
   "require": {
     "elasticsearch/elasticsearch": "^7.2"
   },
