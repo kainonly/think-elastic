@@ -9,7 +9,10 @@
   "autoload": {
     "psr-4": {
       "think\\elastic\\": "src/"
-    }
+    },
+    "classmap": [
+      "tests"
+    ]
   },
   "extra": {
     "think": {
