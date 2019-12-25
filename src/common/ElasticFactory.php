@@ -1,77 +1,69 @@
 <?php
+declare (strict_types=1);
 
 namespace think\elastic\common;
 
+use Elasticsearch\Client;
 use Elasticsearch\ClientBuilder;
+use InvalidArgumentException;
 
-final class ElasticFactory
+class ElasticFactory
 {
     /**
      * 配置
      * @var array
      */
-    private $config = [];
-    /**
-     * 客户端
-     * @var \Elasticsearch\Client
-     */
-    private $client;
+    private $options = [];
 
     /**
      * ElasticFactory constructor.
-     * @param array $config
+     * @param array $options
      */
-    public function __construct(array $config)
+    public function __construct(array $options)
     {
-        $this->config = $config;
-        $this->client = $this->factory($config['default']);
+        $this->options = $options;
     }
 
     /**
      * 客户端生产
-     * @param string $config 客户端配置
-     * @return \Elasticsearch\Client
+     * @param string $option 客户端配置
+     * @return Client
      */
-    private function factory(array $config)
+    private function factory(array $option): Client
     {
         $clientBuilder = ClientBuilder::create()
-            ->setHosts($config['hosts'])
-            ->setRetries($config['retries'])
-            ->setConnectionPool($config['connectionPool'])
-            ->setSelector($config['selector'])
-            ->setSerializer($config['serializer']);
+            ->setHosts($option['hosts'])
+            ->setRetries($option['retries'])
+            ->setConnectionPool($option['connectionPool'])
+            ->setSelector($option['selector'])
+            ->setSerializer($option['serializer']);
 
-        if (!empty($config['SSLVerification'])) {
-            $clientBuilder->setSSLVerification($config['SSLVerification']);
+        if (!empty($option['SSLVerification'])) {
+            $clientBuilder->setSSLVerification($option['SSLVerification']);
         }
 
-        if (!empty($config['logger'])) {
-            $clientBuilder->setLogger($config['logger']);
+        if (!empty($option['logger'])) {
+            $clientBuilder->setLogger($option['logger']);
         }
 
-        if (!empty($config['handler'])) {
-            $clientBuilder->setHandler($config['handler']);
+        if (!empty($option['handler'])) {
+            $clientBuilder->setHandler($option['handler']);
         }
 
         return $clientBuilder->build();
     }
 
     /**
-     * ElasticSearch 客户端
-     * @return \Elasticsearch\Client
-     */
-    public function client()
-    {
-        return $this->client;
-    }
-
-    /**
      * 创建 ElasticSearch 客户端
      * @param string $label 客户端配置标识
-     * @return \Elasticsearch\Client
+     * @return Client
      */
-    public function create(string $label)
+    public function client(string $label = 'default'): Client
     {
-        return $this->factory($this->config[$label]);
+        if (empty($this->options[$label])) {
+            throw new InvalidArgumentException("The [$label] does not exist.");
+        }
+
+        return $this->factory($this->options[$label]);
     }
 }
