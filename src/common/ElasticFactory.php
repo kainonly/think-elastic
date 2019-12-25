@@ -16,6 +16,12 @@ class ElasticFactory
     private $options = [];
 
     /**
+     * 客户端集合
+     * @var array
+     */
+    private $clients = [];
+
+    /**
      * ElasticFactory constructor.
      * @param array $options
      */
@@ -60,10 +66,13 @@ class ElasticFactory
      */
     public function client(string $label = 'default'): Client
     {
+        if (!empty($this->clients[$label])) {
+            return $this->clients[$label];
+        }
         if (empty($this->options[$label])) {
             throw new InvalidArgumentException("The [$label] does not exist.");
         }
-
-        return $this->factory($this->options[$label]);
+        $this->clients[$label] = $this->factory($this->options[$label]);
+        return $this->clients[$label];
     }
 }
