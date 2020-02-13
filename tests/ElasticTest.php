@@ -1,8 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace tests;
+namespace ElasticTests;
 
+use Tests\BaseTest;
 use think\elastic\common\ElasticFactory;
 use think\elastic\service\ElasticService;
 
