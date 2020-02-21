@@ -2,17 +2,22 @@
   "name": "kain/think-elastic",
   "description": "ThinkPHP Elasticsearch 扩展",
   "require": {
-    "php": ">=7.2.0",
+    "php": ">=7.4.0",
     "topthink/framework": "^6.0.0",
     "elasticsearch/elasticsearch": "^7.2"
+  },
+  "require-dev": {
+    "roave/security-advisories": "dev-master"
   },
   "autoload": {
     "psr-4": {
       "think\\elastic\\": "src/"
-    },
-    "classmap": [
-      "tests"
-    ]
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "ElasticTests\\": "library/think-elastic/tests/"
+    }
   },
   "extra": {
     "think": {
