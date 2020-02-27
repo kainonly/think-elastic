@@ -5,7 +5,7 @@
  * Date: 2020/2/27 15:53
  * Description:
  */
-
+use think\facade\Env;
 return [
   'default' => [
       // 集群连接
