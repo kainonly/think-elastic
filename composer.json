@@ -23,7 +23,10 @@
     "think": {
       "services": [
         "think\\elastic\\service\\ElasticService"
-      ]
+      ],
+      "config": {
+        "elasticsearch": "src/config.php"
+      }
     }
   },
   "authors": [
